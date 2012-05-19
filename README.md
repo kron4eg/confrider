@@ -28,13 +28,13 @@ little helper(to render yaml files with ERB)
     #
     # where settings.yml may contain ERB code
 
-    # contents /path/to/settings.yml
+    # contents of settings.yml
 
-    # app:
-    #   name: some app name
-    #   version: <%= File.read('VERSION') %>
-    #   subnamespace:
-    #     another_key: value
+    app:
+      name: some app name
+      version: <%= File.read('VERSION') %>
+      subnamespace:
+        another_key: value
 
     $cfg = Confrider.from_hash(load_yml('/path/to/settings.yml'))
     $cfg['app.name'] # => 'some app name'
