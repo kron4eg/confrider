@@ -2,6 +2,34 @@
 
 Configuration managment system with i18n like syntax
 
+## Usage
+
+### little helper(to render yaml files with ERB)
+
+    require "erb"
+    require "yaml"
+    def load_yml(yml_path)
+        YAML.load(ERB.new(File.read(yml_path)).result(binding))
+    end
+
+### settings.yml (example)
+
+    app:
+      name: some app name
+      version: <%= File.read('VERSION') %>
+      subnamespace:
+        another_key: value
+
+### using Confrider
+
+    $cfg = Confrider.from_hash(load_yml('/path/to/settings.yml'))
+    $cfg['app.name'] # => 'some app name'
+    $cfg['app.version'] # will be rendered through ERB
+    $cfg['app.subnamespace'] # => {'another_key' => 'value'}
+    $cfg['app.subnamespace.another_key'] # => 'value'
+    $cfg['non.existent.key'] # => nil
+    $cfg['non.existent.key', 'default'] # => 'default'
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -15,34 +43,6 @@ And then execute:
 Or install it yourself as:
 
     $ gem install confrider
-
-## Usage
-
-little helper(to render yaml files with ERB)
-
-    require "erb"
-    require "yaml"
-    def load_yml(yml_path)
-        YAML.load(ERB.new(File.read(yml_path)).result(binding))
-    end
-    #
-    # where settings.yml may contain ERB code
-
-    # contents of settings.yml
-
-    app:
-      name: some app name
-      version: <%= File.read('VERSION') %>
-      subnamespace:
-        another_key: value
-
-    $cfg = Confrider.from_hash(load_yml('/path/to/settings.yml'))
-    $cfg['app.name'] # => 'some app name'
-    $cfg['app.version'] # will be rendered through ERB
-    $cfg['app.subnamespace'] # => {'another_key' => 'value'}
-    $cfg['app.subnamespace.another_key'] # => 'value'
-    $cfg['non.existent.key'] # => nil
-    $cfg['non.existent.key', 'default'] # => 'default'
 
 ## Contributing
 
