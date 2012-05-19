@@ -1,6 +1,6 @@
 # Confrider
 
-TODO: Write a gem description
+Configuration managment system with i18n like syntax
 
 ## Installation
 
@@ -18,7 +18,31 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+little helper(to render yaml files with ERB)
+
+    require "erb"
+    require "yaml"
+    def load_yml(yml_path)
+        YAML.load(ERB.new(File.read(yml_path)).result(binding))
+    end
+    #
+    # where settings.yml may contain ERB code
+
+    # contents /path/to/settings.yml
+
+    # app:
+    #   name: some app name
+    #   version: <%= File.read('VERSION') %>
+    #   subnamespace:
+    #     another_key: value
+
+    $cfg = Confrider.from_hash(load_yml('/path/to/settings.yml'))
+    $cfg['app.name'] # => 'some app name'
+    $cfg['app.version'] # will be rendered through ERB
+    $cfg['app.subnamespace'] # => {'another_key' => 'value'}
+    $cfg['app.subnamespace.another_key'] # => 'value'
+    $cfg['non.existent.key'] # => nil
+    $cfg['non.existent.key', 'default'] # => 'default'
 
 ## Contributing
 
@@ -27,3 +51,4 @@ TODO: Write usage instructions here
 3. Commit your changes (`git commit -am 'Added some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+ 
