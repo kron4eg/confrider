@@ -2,6 +2,8 @@
 
 Configuration managment system with i18n like syntax
 
+## Build Status [<img src="https://secure.travis-ci.org/kron4eg/confrider.png"/>](http://travis-ci.org/kron4eg/confrider)
+
 ## Usage
 
 ### little helper(to render yaml files with ERB)
