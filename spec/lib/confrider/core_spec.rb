@@ -1,16 +1,20 @@
 require 'spec_helper'
 
 describe Confrider::Core do
-  let(:cfg) { Confrider::Core.new :foo => 'bar' }
+  let(:cfg) { Confrider::Core.new.tap { |o| o.from_hash :foo => 'bar'} }
 
   context '#initialize' do
     it 'should init @vault' do
-      cfg.instance_variable_get('@vault').should be
+      cfg.instance_variable_get('@vault').should be_a Hash
     end
   end
 
-  context '#save_hash' do
-    let(:cfg) { Confrider::Core.new 'foo' => {'bar' => {'baz' => 'value'}} }
+  context '#from_hash' do
+    let(:cfg) do
+      Confrider::Core.new.tap do |o|
+        o.from_hash 'foo' => {'bar' => {'baz' => 'value'}}
+      end
+    end
 
     it 'should flatten hash keys' do
       cfg['foo.bar.baz'].should == 'value'

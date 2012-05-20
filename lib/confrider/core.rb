@@ -1,12 +1,21 @@
 class Confrider::Core
-  def initialize(hash)
+  def initialize
     @vault = {}
-    save_hash(nil, hash)
   end
 
   def [](key, default_value = nil)
     @vault.fetch(key, default_value)
   end
+
+  def from_hash(hash)
+    save_hash(nil, hash)
+  end
+
+  def normalize_keys(*keys)
+    keys.join('.').gsub(/^\./, '')
+  end
+
+  private
 
   def save(key, value)
     @vault[key] = value
@@ -21,9 +30,5 @@ class Confrider::Core
         else save(normalized_key, value)
       end
     end
-  end
-
-  def normalize_keys(*keys)
-    keys.join('.').gsub(/^\./, '')
   end
 end
