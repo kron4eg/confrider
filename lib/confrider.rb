@@ -1,4 +1,5 @@
 require 'confrider/version'
+require 'confrider/deep_merge'
 require 'confrider/core'
 
 module Confrider

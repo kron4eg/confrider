@@ -19,6 +19,16 @@ describe Confrider::Core do
     it 'should flatten hash keys' do
       cfg['foo.bar.baz'].should == 'value'
     end
+
+    it 'should merge nested hashes' do
+      cfg.from_hash 'foo' => {'bar' => {'kii' => 'kiivalue'}}
+      cfg['foo.bar.baz'].should == 'value'
+      cfg['foo.bar.kii'].should == 'kiivalue'
+
+      # hash should be merged
+      cfg['foo.bar'].should include('kii' => 'kiivalue')
+      cfg['foo.bar'].should include('baz' => 'value')
+    end
   end
 
   describe '#[]' do

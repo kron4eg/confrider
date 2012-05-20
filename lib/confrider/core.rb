@@ -22,12 +22,16 @@ class Confrider::Core
   end
 
   def save_hash(key, hash)
-    @vault[key] = hash if key
+    if key
+      @vault[key] ||= {}
+      @vault[key].deep_merge!(hash)
+    end
     hash.each do |inner_key, value|
       normalized_key = normalize_keys(key, inner_key)
-      case value
-        when Hash then save_hash(normalized_key, value)
-        else save(normalized_key, value)
+      if value.is_a? Hash
+        save_hash(normalized_key, value)
+      else
+        save(normalized_key, value)
       end
     end
   end
