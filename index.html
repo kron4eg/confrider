@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <title>Confrider by kron4eg</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Confrider</h1>
+        <h2>manage config options like i18n</h2>
+
+        <section id="downloads">
+          <a href="https://github.com/kron4eg/confrider/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/kron4eg/confrider/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/kron4eg/confrider" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h1>Confrider</h1>
+
+<p>Configuration managment system with i18n like syntax</p>
+
+<p>Build Status <a href="http://travis-ci.org/kron4eg/confrider"><img src="https://secure.travis-ci.org/kron4eg/confrider.png"></a></p>
+
+<h2>Usage</h2>
+
+<h3>little helper(to render yaml files with ERB)</h3>
+
+<pre><code>require "erb"
+require "yaml"
+def load_yml(yml_path)
+  YAML.load(ERB.new(File.read(yml_path)).result(binding))
+end
+</code></pre>
+
+<h3>settings.yml (example)</h3>
+
+<pre><code>app:
+  name: some app name
+  version: &lt;%= File.read('VERSION') %&gt;
+  subnamespace:
+    another_key: value
+</code></pre>
+
+<h3>using Confrider</h3>
+
+<pre><code>$cfg = Confrider.from_hash(load_yml('/path/to/settings.yml'))
+# or short form
+$cfg = Confrider(load_yml('/path/to/settings.yml'))
+$cfg['app.name'] # =&gt; 'some app name'
+$cfg['app.version'] # will be rendered through ERB
+$cfg['app.subnamespace'] # =&gt; {'another_key' =&gt; 'value'}
+$cfg['app.subnamespace.another_key'] # =&gt; 'value'
+$cfg['non.existent.key'] # =&gt; nil
+$cfg['non.existent.key', 'default'] # =&gt; 'default'
+</code></pre>
+
+<h3>deep merge hashes</h3>
+
+<pre><code># load additional hash that will be deeply merged
+$cfg.from_hash(load_yml('/path/to/settings_local.yml'))
+</code></pre>
+
+<h2>Installation</h2>
+
+<p>Add this line to your application's Gemfile:</p>
+
+<pre><code>gem 'confrider'
+</code></pre>
+
+<p>And then execute:</p>
+
+<pre><code>$ bundle
+</code></pre>
+
+<p>Or install it yourself as:</p>
+
+<pre><code>$ gem install confrider
+</code></pre>
+
+<h2>Contributing</h2>
+
+<ol>
+<li>Fork it</li>
+<li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li>
+<li>Commit your changes (<code>git commit -am 'Added some feature'</code>)</li>
+<li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
+<li>Create new Pull Request</li>
+</ol>
+      </section>
+    </div>
+
+    
+  </body>
+</html>
