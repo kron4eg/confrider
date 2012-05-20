@@ -9,7 +9,7 @@ Configuration managment system with i18n like syntax
     require "erb"
     require "yaml"
     def load_yml(yml_path)
-        YAML.load(ERB.new(File.read(yml_path)).result(binding))
+      YAML.load(ERB.new(File.read(yml_path)).result(binding))
     end
 
 ### settings.yml (example)
@@ -23,12 +23,20 @@ Configuration managment system with i18n like syntax
 ### using Confrider
 
     $cfg = Confrider.from_hash(load_yml('/path/to/settings.yml'))
+    # or short form
+    $cfg = Confrider(load_yml('/path/to/settings.yml'))
     $cfg['app.name'] # => 'some app name'
     $cfg['app.version'] # will be rendered through ERB
     $cfg['app.subnamespace'] # => {'another_key' => 'value'}
     $cfg['app.subnamespace.another_key'] # => 'value'
     $cfg['non.existent.key'] # => nil
     $cfg['non.existent.key', 'default'] # => 'default'
+
+### deep merge hashes
+
+    # load additional hash that will be deeply merged
+    $cfg.from_hash(load_yml('/path/to/settings_local.yml'))
+
 
 ## Installation
 

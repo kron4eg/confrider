@@ -9,3 +9,7 @@ module Confrider
     end
   end
 end
+
+def Confrider(hash)
+  Confrider.from_hash(hash)
+end
