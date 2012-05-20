@@ -3,13 +3,13 @@ require 'spec_helper'
 describe Confrider::Core do
   let(:cfg) { Confrider::Core.new.tap { |o| o.from_hash :foo => 'bar'} }
 
-  context '#initialize' do
+  describe '#initialize' do
     it 'should init @vault' do
       cfg.instance_variable_get('@vault').should be_a Hash
     end
   end
 
-  context '#from_hash' do
+  describe '#from_hash' do
     let(:cfg) do
       Confrider::Core.new.tap do |o|
         o.from_hash 'foo' => {'bar' => {'baz' => 'value'}}
@@ -21,7 +21,7 @@ describe Confrider::Core do
     end
   end
 
-  context '#[]' do
+  describe '#[]' do
     it 'should return value' do
       cfg['foo'].should == 'bar'
     end
@@ -31,7 +31,7 @@ describe Confrider::Core do
     end
   end
 
-  context '#normalize_keys' do
+  describe '#normalize_keys' do
     it 'should join keys with "."' do
       cfg.normalize_keys('q', 'a', 'z').should == 'q.a.z'
     end
