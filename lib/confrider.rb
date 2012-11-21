@@ -1,6 +1,5 @@
 require 'confrider/version'
-# don't load confrider/deep_merge if it was already loaded from active_support
-require 'confrider/deep_merge' unless {}.respond_to? :deep_merge
+require 'confrider/vault'
 require 'confrider/core'
 
 module Confrider
